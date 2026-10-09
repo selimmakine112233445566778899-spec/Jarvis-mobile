@@ -5,7 +5,7 @@ package.domain = com.selim
 source.dir = .
 source.include_exts = py,png,jpg,json
 version = 0.1
-requirements = python3,kivy,plyer,pyjnius
+requirements = python3==3.10,kivy,plyer,pyjnius
 orientation = portrait
 fullscreen = 0
 android.permissions = INTERNET
