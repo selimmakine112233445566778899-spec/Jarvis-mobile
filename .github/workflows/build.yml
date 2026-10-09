@@ -2,15 +2,25 @@ name: Build APK
 on: [push, workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
+      - uses: actions/setup-java@v4
         with:
-          workdir: .
-          buildozer_version: stable
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Sistem paketlerini kur
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libffi-dev libssl-dev build-essential
+      - name: Buildozer kur
+        run: pip install --upgrade buildozer cython
+      - name: APK derle
+        run: yes | buildozer -v android debug
       - uses: actions/upload-artifact@v4
         with:
           name: jarvis-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: bin/*.apk
